@@ -35,46 +35,7 @@
     revealEls.forEach(function (el) { el.classList.add('in'); });
   }
 
-  /* Hero: "shortlist forming" animation */
-  var stage = document.getElementById('stage');
-  var statusText = document.getElementById('status-text');
-  if (stage && !reduce) {
-    var PHASES = [
-      ['in', 1500, 'Reading the JD · discovering candidates…', 2],
-      ['scan', 2500, 'Matching on evidence · verifying skills', 4],
-      ['pick', 1700, 'Confirming availability & notice…', 5],
-      ['done', 4300, '3 verified, available matches · interviews lined up', 7],
-      ['out', 600, '3 verified, available matches · interviews lined up', 7]
-    ];
-    var pipeItems = document.querySelectorAll('.pipe-mini li');
-    var lightPipe = function (n) { pipeItems.forEach(function (li, i) { li.classList.toggle('lit', i < n); }); };
-    var idx = PHASES.length - 1, timer = null, visible = true;
-    var run = function () {
-      idx = (idx + 1) % PHASES.length;
-      var p = PHASES[idx];
-      if (p[0] === 'in') {
-        stage.classList.add('no-anim');
-        stage.dataset.phase = 'reset';
-        void stage.offsetWidth; // reflow so cards jump back without animating
-        stage.classList.remove('no-anim');
-        requestAnimationFrame(function () { stage.dataset.phase = 'in'; });
-      } else {
-        stage.dataset.phase = p[0];
-      }
-      statusText.textContent = p[2];
-      lightPipe(p[3]);
-      clearTimeout(timer);
-      timer = setTimeout(tick, p[1]);
-    };
-    var tick = function () { timer = null; if (visible && !document.hidden) run(); };
-    var resume = function () { if (!timer && visible && !document.hidden) run(); };
-    document.addEventListener('visibilitychange', resume);
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (en) { visible = en[0].isIntersecting; resume(); }, { threshold: 0.2 }).observe(stage);
-    } else {
-      resume();
-    }
-  }
+  /* Keep the illustrative shortlist visible; it is proof, not a loading state. */
 
   /* Spotlight + gentle tilt (desktop pointers only) */
   if (finePointer && !reduce) {
