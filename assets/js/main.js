@@ -1,0 +1,133 @@
+/* RightHire: minimal vanilla JS (nav, reveals, hero animation, micro-interactions, mailto form) */
+(function () {
+  'use strict';
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  /* Nav: glass on scroll + mobile menu */
+  var nav = document.querySelector('.nav-wrap');
+  var onScroll = function () { nav.classList.toggle('scrolled', window.scrollY > 12); };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  var toggle = document.querySelector('.nav-toggle');
+  var menu = document.getElementById('nav-menu');
+  var setMenu = function (open) {
+    menu.classList.toggle('open', open);
+    nav.classList.toggle('menu-open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  };
+  toggle.addEventListener('click', function () { setMenu(!menu.classList.contains('open')); });
+  menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
+
+  /* Scroll reveal */
+  var revealEls = document.querySelectorAll('.reveal, .process');
+  if ('IntersectionObserver' in window && !reduce) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('in'); });
+  }
+
+  /* Hero: "shortlist forming" animation */
+  var stage = document.getElementById('stage');
+  var statusText = document.getElementById('status-text');
+  if (stage && !reduce) {
+    var PHASES = [
+      ['in', 1500, 'Reading profiles…'],
+      ['scan', 2500, 'Checking evidence: code, projects, shipped work'],
+      ['pick', 1700, 'Ranking the strongest matches…'],
+      ['done', 4300, 'Shortlist ready: 3 evidence-backed matches'],
+      ['out', 600, 'Shortlist ready: 3 evidence-backed matches']
+    ];
+    var idx = PHASES.length - 1, timer = null, visible = true;
+    var run = function () {
+      idx = (idx + 1) % PHASES.length;
+      var p = PHASES[idx];
+      if (p[0] === 'in') {
+        stage.classList.add('no-anim');
+        stage.dataset.phase = 'reset';
+        void stage.offsetWidth; // reflow so cards jump back without animating
+        stage.classList.remove('no-anim');
+        requestAnimationFrame(function () { stage.dataset.phase = 'in'; });
+      } else {
+        stage.dataset.phase = p[0];
+      }
+      statusText.textContent = p[2];
+      clearTimeout(timer);
+      timer = setTimeout(tick, p[1]);
+    };
+    var tick = function () { timer = null; if (visible && !document.hidden) run(); };
+    var resume = function () { if (!timer && visible && !document.hidden) run(); };
+    document.addEventListener('visibilitychange', resume);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) { visible = en[0].isIntersecting; resume(); }, { threshold: 0.2 }).observe(stage);
+    } else {
+      resume();
+    }
+  }
+
+  /* Spotlight + gentle tilt (desktop pointers only) */
+  if (finePointer && !reduce) {
+    document.querySelectorAll('.spot, .evidence-card').forEach(function (el) {
+      el.addEventListener('pointermove', function (e) {
+        var r = el.getBoundingClientRect();
+        el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+    });
+    var card = document.querySelector('.tilt');
+    if (card) {
+      card.addEventListener('pointermove', function (e) {
+        var r = card.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = 'rotateY(' + (x * 5).toFixed(2) + 'deg) rotateX(' + (-y * 5).toFixed(2) + 'deg)';
+      });
+      card.addEventListener('pointerleave', function () { card.style.transform = ''; });
+    }
+  }
+
+  /* Year */
+  var y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
+
+  /* Pilot form: compose a mailto (nothing is sent automatically) */
+  var form = document.getElementById('pilot-form');
+  if (!form) return;
+  var TO = 'harshakusalmayuri@gmail.com';
+  var err = document.getElementById('form-error');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var f = form.elements, ok = true;
+    ['name', 'company', 'email', 'role'].forEach(function (k) {
+      var el = f[k], val = el.value.trim();
+      var valid = val !== '' && (k !== 'email' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val));
+      el.setAttribute('aria-invalid', valid ? 'false' : 'true');
+      if (!valid) ok = false;
+    });
+    err.hidden = ok;
+    if (!ok) { form.querySelector('[aria-invalid="true"]').focus(); return; }
+    var v = function (k) { return f[k].value.trim(); };
+    var subject = 'Free shortlist request: ' + v('role') + ' at ' + v('company');
+    var body = [
+      'Hi Harsha,', '',
+      "I'd like a free evidence-backed shortlist for one open role.", '',
+      'Name: ' + v('name'),
+      'Company: ' + v('company'),
+      'Work email: ' + v('email'),
+      'Role: ' + v('role'),
+      'Location: ' + (v('location') || '-'), '',
+      'Notes: ' + (v('notes') || '-'), '',
+      'Thanks!'
+    ].join('\n');
+    var url = 'mailto:' + TO + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    form.setAttribute('data-mailto', url);
+    window.location.href = url;
+  });
+})();
