@@ -40,12 +40,14 @@
   var statusText = document.getElementById('status-text');
   if (stage && !reduce) {
     var PHASES = [
-      ['in', 1500, 'Reading profiles…'],
-      ['scan', 2500, 'Checking evidence: code, projects, shipped work'],
-      ['pick', 1700, 'Ranking the strongest matches…'],
-      ['done', 4300, 'Shortlist ready: 3 evidence-backed matches'],
-      ['out', 600, 'Shortlist ready: 3 evidence-backed matches']
+      ['in', 1500, 'Reading the JD · discovering candidates…', 2],
+      ['scan', 2500, 'Matching on evidence · verifying skills', 4],
+      ['pick', 1700, 'Confirming availability & notice…', 5],
+      ['done', 4300, '3 verified, available matches · interviews lined up', 7],
+      ['out', 600, '3 verified, available matches · interviews lined up', 7]
     ];
+    var pipeItems = document.querySelectorAll('.pipe-mini li');
+    var lightPipe = function (n) { pipeItems.forEach(function (li, i) { li.classList.toggle('lit', i < n); }); };
     var idx = PHASES.length - 1, timer = null, visible = true;
     var run = function () {
       idx = (idx + 1) % PHASES.length;
@@ -60,6 +62,7 @@
         stage.dataset.phase = p[0];
       }
       statusText.textContent = p[2];
+      lightPipe(p[3]);
       clearTimeout(timer);
       timer = setTimeout(tick, p[1]);
     };
@@ -91,6 +94,54 @@
       });
       card.addEventListener('pointerleave', function () { card.style.transform = ''; });
     }
+  }
+
+
+  /* Problem cards: tap / click / keyboard to flip */
+  document.querySelectorAll('.pain').forEach(function (b) {
+    b.addEventListener('click', function () {
+      b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+    });
+  });
+
+  /* Pipeline: progress rail, active stage, sticky stepper */
+  var stagesEl = document.getElementById('stages');
+  if (stagesEl) {
+    var stgs = Array.prototype.slice.call(stagesEl.querySelectorAll('.stg'));
+    var links = Array.prototype.slice.call(document.querySelectorAll('#stepper a'));
+    var fill = document.getElementById('stepper-fill');
+    var stepList = document.querySelector('#stepper ol');
+    var lastActive = -1, ticking = false;
+    var update = function () {
+      ticking = false;
+      var vh = window.innerHeight, mark = vh * 0.55;
+      var r = stagesEl.getBoundingClientRect();
+      stagesEl.style.setProperty('--rail', Math.max(0, Math.min(r.height, mark - r.top - 28)) + 'px');
+      var active = 0;
+      stgs.forEach(function (s, i) {
+        var top = s.getBoundingClientRect().top;
+        var on = top < mark;
+        s.classList.toggle('on', on);
+        if (on) active = i + 1;
+      });
+      stgs.forEach(function (s, i) { s.classList.toggle('active', i + 1 === active); });
+      links.forEach(function (a, i) {
+        a.classList.toggle('active', i + 1 === active);
+        a.classList.toggle('done', i + 1 < active);
+        if (i + 1 === active) a.setAttribute('aria-current', 'step'); else a.removeAttribute('aria-current');
+      });
+      var prog = active <= 1 ? (active ? 0 : 0) : (active - 1) / (stgs.length - 1);
+      if (fill) fill.style.setProperty('--p', (prog * 100).toFixed(1) + '%');
+      if (active !== lastActive && active > 0 && stepList && stepList.scrollWidth > stepList.clientWidth) {
+        var a = links[active - 1];
+        stepList.scrollTo({ left: a.parentNode.offsetLeft - stepList.clientWidth / 2 + a.parentNode.offsetWidth / 2, behavior: reduce ? 'auto' : 'smooth' });
+      }
+      lastActive = active;
+    };
+    var onS = function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+    window.addEventListener('scroll', onS, { passive: true });
+    window.addEventListener('resize', onS);
+    update();
   }
 
   /* Year */

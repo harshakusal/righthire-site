@@ -20,19 +20,30 @@ Static site, no build step. Open `index.html` or serve locally:
   - `righthire-wordmark.svg` / `-1200.png`, `righthire-wordmark-white.svg`: text only
   - `favicon.svg`, `favicon-16/32/48.png`, `apple-touch-icon.png` (180), `icon-192.png`
 
+## Page sections (v3: the full pipeline story)
+1. Hero (dark): tagline, "From your JD to the interview room, on evidence." and an animated 7-step pipeline card (labelled Example)
+2. `#problems`: "Recruiting is broken": 13 recruiter pains in 4 groups (Résumés you can't trust · Sourcing eats the week · Candidates go dark · Coordination chaos). Each is a flip card: the pain on the front, how RightHire answers it on the back. On mobile each group is a swipeable row.
+3. `#why`: Before vs with RightHire ("a pile of résumés" vs "3–5 verified, available matches")
+4. `#how`: the 7-stage pipeline (JD intake → Discovery → Evidence-based matching → Skill verification → Availability & notice check → Interview scheduling → Follow-up & feedback loop). It has a sticky stepper with a progress bar, a scroll-driven rail, and an Example mockup for each stage. Each stage links to the pains it solves.
+5. `#shortlist`: anatomy of an evidence card (evidence, verification, availability)
+6. `#who`: audiences (startups, hiring managers, staffing firms and VMS vendors)
+7. `#pilot`: free pilot form, contact and booking
+8. `#faq`: turnaround, verification, duplicates and ownership, availability and notice checks, scheduling, automation, cost, roles, privacy, staffing firms
+9. Footer: CTA, contact (Nellore), links, privacy/terms
+
 ## Brand
 - Concept: an "R" whose leg turns into a precise check mark (the *right* hire, verified).
 - Colours: Navy `#0B1736` · Signal green `#2BD989` (on dark) · Deep green `#12A86B` (mark on light) · Text-safe green `#0B7A4C`
 - Type: Plus Jakarta Sans ExtraBold (wordmark, converted to outlines; headings) · Instrument Serif italic (accent words) · Inter (body) · JetBrains Mono (labels)
 
 ## Motion
-- Hero "shortlist forming" animation (clearly labelled Example), scroll reveals, animated gradient mesh, marquee, process line, spotlight/tilt hovers. Pure CSS + ~150 lines of vanilla JS.
+- Hero "pipeline" animation (clearly labelled Example), scroll reveals, animated gradient mesh, marquee, flip cards for pains, scroll-driven pipeline rail and stepper, spotlight/tilt hovers. Pure CSS + vanilla JS, no libraries.
 - The hero animation pauses when it is off-screen or the tab is hidden.
 - `prefers-reduced-motion: reduce` turns off all motion and shows the final shortlist state.
 
 ## Before going live
-- Set absolute URLs for `og:image` / `twitter:image` (and add `og:url` + `<link rel="canonical">`) once the domain is known.
-- Confirm the FAQ wording on turnaround, privacy and NDA.
+- `og:image` / `twitter:image` point to harshakusal.github.io/righthire-site. Update them (and add `og:url` + canonical) if a custom domain is added.
+- Confirm the FAQ and pipeline wording on turnaround, how skills are verified, ownership records, and the optional scheduling/follow-up service.
 - The pilot form only opens the visitor's email app (mailto). For real form submissions, use a free form backend such as Netlify Forms or Formspree.
 - Booking link: set `BOOKING_URL` near the bottom of `index.html` to your Google Calendar appointment-schedule link. The "Book a 20-min call" buttons (hero, pilot contact cards, footer) appear only when it is set.
 - Review `privacy.html` / `terms.html` (retention periods, response times, liability cap, jurisdiction) before relying on them.
