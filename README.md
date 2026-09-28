@@ -8,6 +8,7 @@ Static site, no build step. Open `index.html` or serve locally:
 
 ## Structure
 - `index.html`: single-page site (CSS in `assets/css/styles.css`, tiny JS in `assets/js/main.js`)
+- `privacy.html`, `terms.html`: legal pages (extra styles in `assets/css/legal.css`), linked from the footer
 - `favicon.ico`, `site.webmanifest`
 - `assets/og-image.png`: 1200×630 social preview
 - `assets/brand/`: logo kit
@@ -33,3 +34,5 @@ Static site, no build step. Open `index.html` or serve locally:
 - Set absolute URLs for `og:image` / `twitter:image` (and add `og:url` + `<link rel="canonical">`) once the domain is known.
 - Confirm the FAQ wording on turnaround, privacy and NDA.
 - The pilot form only opens the visitor's email app (mailto). For real form submissions, use a free form backend such as Netlify Forms or Formspree.
+- Booking link: set `BOOKING_URL` near the bottom of `index.html` to your Google Calendar appointment-schedule link. The "Book a 20-min call" buttons (hero, pilot contact cards, footer) appear only when it is set.
+- Review `privacy.html` / `terms.html` (retention periods, response times, liability cap, jurisdiction) before relying on them.

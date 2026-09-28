@@ -82,7 +82,8 @@
         <a class="btn btn-primary btn-lg" href="mailto:harshakusalmayuri@gmail.com?subject=Free%20shortlist%20request%3A%20RightHire%20pilot&amp;body=Hi%20Harsha%2C%0A%0AI'd%20like%20a%20free%20evidence-backed%20shortlist%20for%20one%20open%20role.%0A%0ARole%3A%20%0ACompany%3A%20%0ALocation%20%2F%20remote%3A%20%0AJob%20description%20link%3A%20%0A%0AThanks%2C%0A"><span>Get a free shortlist</span>
           <svg class="arrow" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
-        <a class="btn btn-glass btn-lg" href="#how"><span>See how it works</span></a>
+        <a class="btn btn-glass btn-lg" href="#how" data-booking-alt><span>See how it works</span></a>
+        <a class="btn btn-glass btn-lg" href="#" data-booking hidden target="_blank" rel="noopener"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18M9 15l2 2 4-4"/></svg><span>Book a 20-min call</span></a>
       </div>
       <ul class="hero-points reveal" style="--d:.3s" aria-label="Highlights">
         <li><span class="nw">3–5</span> candidates, not 50 résumés</li>
@@ -321,6 +322,10 @@
           <span class="cc-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span>
           <span><small>Phone</small>+91 80191 47696</span>
         </a>
+        <a href="#" class="contact-card" data-booking hidden target="_blank" rel="noopener">
+          <span class="cc-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></span>
+          <span><small>Book a 20-min call</small>Pick a time (Google Meet)</span>
+        </a>
       </div>
     </div>
 
@@ -368,7 +373,7 @@
       </details>
       <details class="reveal" style="--d:.16s">
         <summary>How do you handle data and privacy?</summary>
-        <div class="faq-body"><p>We build evidence from publicly available professional information (such as public repositories, portfolios and published work) and from what candidates choose to share with us. Your role details are kept confidential and used only for your search, and candidate details are shared with you only for that role. If you need an NDA, we can discuss one.</p></div>
+        <div class="faq-body"><p>We build evidence from publicly available professional information (such as public repositories, portfolios and published work) and from what candidates choose to share with us. Your role details are kept confidential and used only for your search, and candidate details are shared with you only for that role. If you need an NDA, we can discuss one. Read our <a href="privacy.html">privacy policy</a> for the details.</p></div>
       </details>
       <details class="reveal" style="--d:.2s">
         <summary>How is this different from a job board or a traditional agency?</summary>
@@ -390,9 +395,12 @@
   <div class="container">
     <div class="footer-cta reveal">
       <p class="footer-tag">Right hire for the <em class="serif grad-text">right people.</em></p>
-      <a class="btn btn-primary btn-lg" href="#pilot"><span>Get a free shortlist</span>
-        <svg class="arrow" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </a>
+      <div class="footer-cta-actions">
+        <a class="btn btn-glass btn-lg" href="#" data-booking hidden target="_blank" rel="noopener"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18M9 15l2 2 4-4"/></svg><span>Book a 20-min call</span></a>
+        <a class="btn btn-primary btn-lg" href="#pilot"><span>Get a free shortlist</span>
+          <svg class="arrow" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
     </div>
     <div class="footer-grid">
       <div class="footer-brand">
@@ -420,11 +428,33 @@
     </div>
     <div class="footer-bottom">
       <p>© <span id="year">2026</span> RightHire. Founded by Harsha Vardhan.</p>
+      <ul class="footer-legal" aria-label="Legal">
+        <li><a href="privacy.html">Privacy policy</a></li>
+        <li><a href="terms.html">Terms of service</a></li>
+      </ul>
       <a href="#top" class="to-top">Back to top <span aria-hidden="true">↑</span></a>
     </div>
   </div>
 </footer>
 
 <script src="assets/js/main.js" defer></script>
+<script>
+  /* =====================================================================
+     BOOKING LINK: SET THIS ONE VALUE
+     Paste your Google Calendar appointment-schedule link below, e.g.
+       var BOOKING_URL = 'https://calendar.app.google/XXXXXXXXXXXX';
+     While it is empty (''), every "Book a 20-min call" button stays hidden.
+     ===================================================================== */
+  var BOOKING_URL = '';
+
+  (function () {
+    if (!/^https:\/\//.test(BOOKING_URL)) return;
+    document.querySelectorAll('[data-booking]').forEach(function (el) {
+      el.href = BOOKING_URL;
+      el.hidden = false;
+    });
+    document.querySelectorAll('[data-booking-alt]').forEach(function (el) { el.hidden = true; });
+  })();
+</script>
 </body>
 </html>
