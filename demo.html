@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Try RightHire | Evidence check for a résumé</title>
+  <meta name="description" content="Paste a job description and a résumé. RightHire scores role fit from evidence of real work, and estimates how much of the writing looks AI-generated. Instant mode stays in your browser.">
+  <meta name="theme-color" content="#050B1E">
+  <meta name="robots" content="index,follow">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css?v=20261005010000">
+  <link rel="stylesheet" href="assets/css/demo.css?v=20261005020000">
+  <script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="nav-wrap no-print" id="top">
+  <div class="nav container">
+    <a class="brand" href="index.html" aria-label="RightHire home">
+      <img src="assets/brand/righthire-logo-dark.svg" alt="RightHire" width="148" height="36">
+    </a>
+    <nav id="nav-menu" class="nav-menu" aria-label="Primary">
+      <a href="index.html#shortlist">The shortlist</a>
+      <a href="index.html#how">How it works</a>
+      <a href="index.html#problems">The problem</a>
+      <a href="index.html#who">Who it's for</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="demo.html" aria-current="page">Try it</a>
+      <a class="btn btn-primary btn-sm nav-cta" href="index.html#pilot"><span>Get a free shortlist</span></a>
+    </nav>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="demo-hero no-print" aria-labelledby="demo-title">
+    <div class="container">
+      <p class="pill"><span class="pulse" aria-hidden="true"></span> Instant mode · stays on this device</p>
+      <h1 id="demo-title">Try <em class="serif grad-text">RightHire.</em></h1>
+      <p class="demo-lead">Paste a job description and a résumé. This check pulls the must-haves, looks for proof in the actual work, and estimates how much of the writing looks AI-generated.</p>
+      <p class="demo-privacy" id="privacy-note">Instant mode runs in this browser. The job description and résumé are not uploaded.</p>
+    </div>
+  </section>
+
+  <div class="demo-sheet">
+    <div class="container">
+      <form class="demo-card no-print" id="demo-form" novalidate>
+        <div class="demo-card-head">
+          <div>
+            <h2>Job and résumé</h2>
+            <p>Use your own text, or load a sample. One click fills both boxes and runs the report.</p>
+          </div>
+          <div class="sample-wrap">
+            <button class="btn btn-line" type="button" id="sample-run">Try a sample</button>
+            <button class="btn btn-line btn-icon" type="button" id="sample-menu-btn" aria-expanded="false" aria-controls="sample-menu" aria-label="Choose a sample">
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <ul class="sample-menu" id="sample-menu" role="menu" hidden></ul>
+          </div>
+        </div>
+
+        <div class="workbench">
+          <div class="field">
+            <label for="jd">Job description</label>
+            <textarea id="jd" name="jd" rows="14" required placeholder="Paste the role: must-haves, nice-to-haves, years, and what the person will actually do."></textarea>
+          </div>
+          <div class="field">
+            <label for="resume">Résumé</label>
+            <textarea id="resume" name="resume" rows="12" required placeholder="Paste the résumé, or upload a PDF, DOCX, or TXT file. The text lands here so you can see exactly what gets read."></textarea>
+            <label class="drop" id="drop">
+              <input id="file" type="file" accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain">
+              <span class="drop-title">Upload a PDF, DOCX, or TXT</span>
+              <span class="drop-hint" id="file-status">Or drop a file here. Parsing happens in this browser.</span>
+            </label>
+          </div>
+        </div>
+
+        <fieldset class="mode-field" id="mode-field" hidden>
+          <legend>Analysis mode</legend>
+          <label class="mode-opt"><input type="radio" name="mode" value="instant" id="mode-instant" checked> <span><b>Instant</b> On this device. Nothing is uploaded.</span></label>
+          <label class="mode-opt"><input type="radio" name="mode" value="deep" id="mode-deep"> <span><b>Deep AI</b> Sends the text to your proxy, which calls a model. The key stays on the server.</span></label>
+        </fieldset>
+
+        <p class="form-error" id="form-error" role="alert" hidden></p>
+        <div class="analyze-row">
+          <button class="btn btn-primary btn-lg" type="submit" id="analyze-btn"><span>Analyze</span>
+            <svg class="arrow" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+          <p class="analyze-hint" id="analyze-hint">Fit is judged on evidence of work. A bare keyword, or a skill that is only listed, scores lower.</p>
+        </div>
+      </form>
+
+      <div id="report" class="report" hidden aria-live="polite"></div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer no-print">
+  <div class="footer-glow" aria-hidden="true"></div>
+  <div class="container">
+    <div class="footer-grid" style="padding-top:0">
+      <div class="footer-brand">
+        <img src="assets/brand/righthire-logo-dark.svg" alt="RightHire" width="164" height="40" loading="lazy">
+        <p>AI talent intelligence for tech hiring. This page is a working sample of the evidence check.</p>
+      </div>
+      <div>
+        <h2 class="footer-h">Contact</h2>
+        <ul class="footer-list">
+          <li><a href="mailto:harshakusalmayuri@gmail.com">harshakusalmayuri@gmail.com</a></li>
+          <li><a href="tel:+918019147696">+91 80191 47696</a></li>
+          <li>Nellore, Andhra Pradesh, India</li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="footer-h">Explore</h2>
+        <ul class="footer-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="demo.html" aria-current="page">Try RightHire</a></li>
+          <li><a href="index.html#pilot">Free pilot</a></li>
+          <li><a href="privacy.html">Privacy policy</a></li>
+          <li><a href="terms.html">Terms of service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span id="year">2026</span> RightHire. Founded by Harsha Vardhan.</p>
+      <a href="#top" class="to-top">Back to top <span aria-hidden="true">↑</span></a>
+    </div>
+  </div>
+</footer>
+
+<noscript>
+  <p class="noscript">Turn on JavaScript to run the evidence check. It stays in your browser.</p>
+</noscript>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js" defer></script>
+<script src="assets/js/demo-analyze.js?v=20261005010000" defer></script>
+<script src="assets/js/demo-samples.js?v=20261005010000" defer></script>
+<script src="assets/js/main.js?v=20261005010000" defer></script>
+<script src="assets/js/demo-app.js?v=20261005010000" defer></script>
+<script>
+  /* =====================================================================
+     DEEP AI MODE (optional)
+     Leave this empty and the page uses instant mode only. Nothing is uploaded.
+     After you deploy the proxy in /worker, set the URL, for example:
+       var RIGHTHIRE_PROXY_URL = 'https://righthire-demo.<your-subdomain>.workers.dev';
+     Never put an API key here. The key lives only on the proxy.
+     ===================================================================== */
+  var RIGHTHIRE_PROXY_URL = '';
+</script>
+</body>
+</html>
