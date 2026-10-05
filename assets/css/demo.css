@@ -188,7 +188,7 @@
   .report{margin:0}
   .score-band,.panel-card,.req,.hl{box-shadow:none}
   .score-band{background:#fff !important;color:#111;border:1px solid #ccc;break-inside:avoid}
-  .score-copy h2,.score-num{color:#111}
+  .score-copy h2,.score-num{color:#111;fill:#111}
   .score-copy p,.mode-chip{color:#222}
   .score-ring .track{stroke:#ddd}
   .panel-card,.req{break-inside:avoid;page-break-inside:avoid}
