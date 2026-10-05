@@ -1,0 +1,11 @@
+name = "righthire-demo-proxy"
+main = "src/index.js"
+compatibility_date = "2024-12-01"
+
+# Public config only. The API key is a secret:
+#   npx wrangler secret put LLM_API_KEY
+[vars]
+LLM_BASE_URL = "https://api.openai.com/v1"
+LLM_MODEL = "gpt-4o-mini"
+# Comma-separated page origins. GitHub Pages origin has no path.
+ALLOWED_ORIGIN = "https://harshakusal.github.io"

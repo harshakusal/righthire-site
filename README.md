@@ -47,3 +47,46 @@ Static site, no build step. Open `index.html` or serve locally:
 - The pilot form only opens the visitor's email app (mailto). For real form submissions, use a free form backend such as Netlify Forms or Formspree.
 - Booking link: set `BOOKING_URL` near the bottom of `index.html` to your Google Calendar appointment-schedule link. The "Book a 20-min call" buttons (hero, pilot contact cards, footer) appear only when it is set.
 - Review `privacy.html` / `terms.html` (retention periods, response times, liability cap, jurisdiction) before relying on them.
+
+## Try RightHire (`demo.html`)
+
+A recruiter pastes a job description, uploads or pastes a résumé (PDF, DOCX, or TXT), and gets an evidence report: role-fit score, must-have and nice-to-have matches, experience fit, an AI-writing likelihood, and interview questions. "Try a sample" loads a shared job description with a strong human résumé, an AI-heavy résumé, or a partial frontend résumé.
+
+The page is plain HTML, CSS, and JavaScript. GitHub Pages serves it with no build. PDF text uses pdf.js and DOCX text uses mammoth, both loaded from a CDN in the browser.
+
+### Instant mode
+
+`RIGHTHIRE_PROXY_URL` at the bottom of `demo.html` starts empty. With it empty, the page only runs instant mode. Scoring happens in the browser. The job description and résumé are not uploaded, and the page says so.
+
+### How the fit score is computed
+
+The page pulls requirements from the job description. Bullets under must-have and nice-to-have headings become requirements. If the description is prose, sentences that name a skill become requirements, and a sentence that says "a plus" or "preferred" is a nice-to-have.
+
+Each requirement is scored from the résumé, using a skill and synonym list:
+
+- About 100 when the résumé shows the skill in real work: a system, an action, and a number or outcome.
+- About 80 when it names where the skill was used, without a measured result.
+- About 26 to 44 when the word only appears in a generic line.
+- 16 when the skill is only on a skills list, with no project behind it. Those are flagged "listed only".
+- 0 when it is missing, or when the résumé only mentions it to deny it ("have not shipped Go").
+
+Must-haves are about 78% of the requirement score. Nice-to-haves are about 22%. Years and seniority are a separate experience score: date ranges on the résumé against the years the role asks for, plus title level. A track mismatch (for example a frontend résumé against a backend role) caps that part. Role fit is about 82% requirements and 18% experience, from 0 to 100. 75 and above is Strong, 45 to 74 is Possible, below 45 is Weak.
+
+### How the AI-writing estimate is computed
+
+This is a likelihood, not proof. Five signals are mixed: stock phrases such as "spearheaded", "leveraged", "dynamic", "results-driven", and "proven track record" (the largest share); how little sentence length varies; bullets that open with the same kind of stock verb; how few sentences contain a number, a named system, or concrete technical detail; and stacked buzzword phrases. A skills list is not judged as prose rhythm. The report shows the percentage, the signals, a section breakdown, and the most AI-like passages, plus this line: "This is an estimate of how much the writing resembles common AI-generated résumé language. It is not proof that a person or a tool wrote it."
+
+### Deep AI mode
+
+Optional. The browser calls a small Cloudflare Worker. The model key stays on the worker.
+
+1. From `worker/`, deploy: `npx wrangler deploy`
+2. Set the secret (this is the only place the key lives): `npx wrangler secret put LLM_API_KEY`
+3. In `worker/wrangler.toml`, `ALLOWED_ORIGIN` is `https://harshakusal.github.io`. Add a local origin, comma-separated, if you test deep mode on your own machine. `LLM_BASE_URL` defaults to `https://api.openai.com/v1` and `LLM_MODEL` to `gpt-4o-mini`. Set `LLM_JSON_MODE = "off"` under `[vars]` if your provider rejects JSON mode.
+4. Copy the `workers.dev` URL into `demo.html`, near the bottom:
+
+```
+var RIGHTHIRE_PROXY_URL = 'https://righthire-demo-proxy.<your-subdomain>.workers.dev';
+```
+
+Leave the value empty to stay on instant mode. Never put an API key in `demo.html` or in git. For local worker development, copy `worker/.dev.vars.example` to `worker/.dev.vars` (gitignored) and run `npx wrangler dev`. The page POSTs `{ jd, resume }` to `{proxy}/analyze`. If the proxy fails, the page falls back to the in-browser report and says so.
